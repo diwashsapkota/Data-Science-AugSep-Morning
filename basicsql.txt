@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS product (
+    id INTEGER PRIMARY KEY,
+    mfd DATE NOT NULL,
+    product text NOT NULL,
+    cost INTEGER
+);
+
+INSERT INTO product (mfd, product, cost) 
+    VALUES
+    ('2022-11-01', 'Product1', 80),
+    ('2021-12-02', 'Product2', 170),
+    ('2022-10-03', 'Product3', 130),
+    ('2022-09-04', 'Product4', 200),
+    ('2023-01-01', 'Product5', 250);
+
+
+CREATE TABLE IF NOT EXISTS sales (
+    id INTEGER PRIMARY KEY,
+    salesdate DATE NOT NULL,
+    item TEXT NOT NULL,
+    price INTEGER,
+    region TEXT
+);
+
+
+INSERT INTO sales (salesdate, item, price, region) 
+    VALUES
+    ('2023-01-01', 'Product1', 100, 'North'),
+    ('2023-01-02', 'Product2', 200, 'South'),
+    ('2023-01-03', 'Product1', 150, 'East'),
+    ('2023-01-04', 'Product3', 250, 'West'),
+    ('2023-01-05', 'Product2', 300, 'North');
+
+
+-- SELECT * FROM product;
+-- SELECT * FROM sales;
+
+SELECT p.mfd, p.product, p.cost, S.salesdate, s.price, (s.price - p.cost) as profit
+    FROM product AS p
+    INNER JOIN sales AS s
+    ON p.product = s.item
+    -- WHERE profit > 30 and s.salesdate > '2023-01-03'
+    -- WHERE p.product LIKE '%2'
+    WHERE p.product IN ('Product1', 'Product3')
+    ORDER BY profit DESC;
